@@ -37,6 +37,8 @@ class HumanDateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Cocur\HumanDate\HumanDate::transform()
+     * @covers Cocur\HumanDate\HumanDate::isToday()
+     * @covers Cocur\HumanDate\HumanDate::isToday()
      * @dataProvider provider
      */
     public function testTransform($date, $expected)
@@ -46,6 +48,12 @@ class HumanDateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @covers Cocur\HumanDate\HumanDate::transform()
+     * @covers Cocur\HumanDate\HumanDate::isToday()
+     * @covers Cocur\HumanDate\HumanDate::isTomorrow()
+     * @covers Cocur\HumanDate\HumanDate::isYesterday()
+     * @covers Cocur\HumanDate\HumanDate::isNextWeek()
+     * @covers Cocur\HumanDate\HumanDate::isLastWeek()
+     * @covers Cocur\HumanDate\HumanDate::ISTHISYEAR()
      * @dataProvider provider
      */
     public function testTransformString($date, $expected)
@@ -56,6 +64,7 @@ class HumanDateTest extends \PHPUnit_Framework_TestCase
     public function provider()
     {
         return array(
+            array('', 'Today'),
             array('-1 day', 'Yesterday'),
             array('+1 day', 'Tomorrow'),
             array('+3 days', 'Next '.date('l', strtotime('+3 days'))),
