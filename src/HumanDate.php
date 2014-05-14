@@ -65,6 +65,11 @@ class HumanDate
         return $date->format('F j, Y');
     }
 
+    /**
+     * @param DateTime $date Date.
+     *
+     * @return boolean `true` if the given date is today, `false` otherwise.
+     */
     protected function isToday(DateTime $date)
     {
         $today = new DateTime('now');
@@ -77,6 +82,11 @@ class HumanDate
         return false;
     }
 
+    /**
+     * @param DateTime $date Date.
+     *
+     * @return boolean `true` if the given date is tomorrow, `false` otherwise.
+     */
     protected function isTomorrow(DateTime $date)
     {
         $tomorrow = new DateTime('+1 day');
@@ -89,6 +99,11 @@ class HumanDate
         return false;
     }
 
+    /**
+     * @param DateTime $date Date.
+     *
+     * @return boolean `true` if the given date is yesterday, `false` otherwise.
+     */
     protected function isYesterday(DateTime $date)
     {
         $yesterday = new DateTime('-1 day');
@@ -101,6 +116,11 @@ class HumanDate
         return false;
     }
 
+    /**
+     * @param DateTime $date Date.
+     *
+     * @return boolean `true` if the given date is next week, `false` otherwise.
+     */
     protected function isNextWeek(DateTime $date)
     {
         $week = new DateTime('+7 days');
@@ -111,6 +131,11 @@ class HumanDate
         return false;
     }
 
+    /**
+     * @param DateTime $date Date.
+     *
+     * @return boolean `true` if the given date is last week, `false` otherwise.
+     */
     protected function isLastWeek(DateTime $date)
     {
         $week = new DateTime('-7 days');
@@ -121,6 +146,10 @@ class HumanDate
         return false;
     }
 
+    /**
+     * @param DateTime $date Date.
+     * @return boolean `true` if the given date is this year, `false` otherwise.
+     */
     protected function isThisYear(DateTime $date)
     {
         if (date('Y') === $date->format('Y')) {
