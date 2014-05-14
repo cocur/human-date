@@ -7,7 +7,6 @@ Made in Vienna by [Florian Eckerstorfer](http://florianeckerstorfer.com).
 
 [![Latest Stable Version](http://img.shields.io/packagist/v/cocur/human-date.svg)](https://packagist.org/packages/cocur/human-date)
 [![Build Status](http://img.shields.io/travis/cocur/human-date.svg)](https://travis-ci.org/cocur/human-date)
-[![Scrutinizer Quality Score](https://scrutinizer-ci.com/g/cocur/human-date/badges/quality-score.png?s=6dc4ff1137d4405f75be9e98c74b1b70fcfdffaa)](https://scrutinizer-ci.com/g/cocur/human-date/)
 [![Code Coverage](http://img.shields.io/coveralls/cocur/human-date.svg)](https://coveralls.io/r/cocur/human-date)
 
 
