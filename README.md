@@ -97,7 +97,7 @@ $slug = $this->get('cocur_human_date')->slugify(new DateTime('2014-04-14'));
 The bundle also provides an alias `human_date` for the `cocur_human_date` service:
 
 ```php
-$slug = $this->get('cocur_human_date')->slugify(new DateTime('2014-04-14'));
+$slug = $this->get('human_date')->slugify(new DateTime('2014-04-14'));
 ```
 
 ### Twig
