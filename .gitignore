@@ -1,4 +1,6 @@
+/build/api
 /build/logs/
+/cache/
 /phpunit.xml
 /vendor/
 /composer.lock
