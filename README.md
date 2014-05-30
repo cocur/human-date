@@ -125,10 +125,12 @@ use Cocur\HumanDate\Bridge\Symfony\Translation\SymfonyTranslation;
 use Cocur\HumanDate\HumanDate;
 
 // Get or create an instance of Symfony\Component\Translation\TranslatorInterface
+// For example, inside a controller
 $sfTrans = $this->get('translation');
 
 // Create an adapter with translation domain "human_date" and locale "en"
 // trans() passes domain and locale to every call of Symfony\Component\Translation\TranslatorInterface::trans()
+// If you omit the domain and locale it uses the defaults.
 $trans = new SymfonyTranslation($sfTrans, 'human_date', 'en');
 
 $humanDate = new HumanDate($trans);
