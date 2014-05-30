@@ -11,7 +11,9 @@
 
 namespace Cocur\HumanDate;
 
-use \DateTime;
+use Cocur\HumanDate\Translation\TranslationInterface;
+use DateTime;
+use InvalidArgumentException;
 
 /**
  * HumanDate
@@ -23,6 +25,29 @@ use \DateTime;
  */
 class HumanDate
 {
+    /** @var TranslationInterface */
+    private $translation;
+
+    /**
+     * @param TranslationInterface|null $translation Object to translate messages.
+     */
+    public function __construct($translation = null)
+    {
+        if (null !== $translation && !$translation instanceof TranslationInterface) {
+            throw new InvalidArgumentException('$translation must be null or an instance ofr TranslationInterface');
+        }
+
+        $this->translation = $translation;
+    }
+
+    /**
+     * @return TranslationInterface Object to translate messages.
+     */
+    public function getTranslation()
+    {
+        return $this->translation;
+    }
+
     /**
      * Transforms the given date into a human-readable date.
      *
@@ -39,23 +64,23 @@ class HumanDate
         $current = new DateTime('now');
 
         if ($this->isToday($date)) {
-            return 'Today';
+            return $this->trans('Today');
         }
 
         if ($this->isYesterday($date)) {
-            return 'Yesterday';
+            return $this->trans('Yesterday');
         }
 
         if ($this->isTomorrow($date)) {
-            return 'Tomorrow';
+            return $this->trans('Tomorrow');
         }
 
         if ($this->isNextWeek($date)) {
-            return sprintf('Next %s', $date->format('l'));
+            return $this->trans('Next %weekday%', [ '%weekday%' =>  $date->format('l') ]);
         }
 
         if ($this->isLastWeek($date)) {
-            return sprintf('Last %s', $date->format('l'));
+            return $this->trans('Last %weekday%', [ '%weekday%' => $date->format('l') ]);
         }
 
         if ($this->isThisYear($date)) {
@@ -156,5 +181,22 @@ class HumanDate
             return true;
         }
         return false;
+    }
+
+    /**
+     * Translates the given message.
+     *
+     * @param string $id         The message id (may also be an object that can be cast to string).
+     * @param array  $parameters An array of parameters for the message.
+     *
+     * @return string The translated message.
+     */
+    protected function trans($id, array $parameters = array())
+    {
+        if (null === $this->translation) {
+            return str_replace(array_keys($parameters), array_values($parameters), $id);
+        }
+
+        return $this->translation->trans($id, $parameters);
     }
 }

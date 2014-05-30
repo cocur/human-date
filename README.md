@@ -61,6 +61,22 @@ echo $humanDate->transform(new DateTime('2013-03-30'));
 ```
 
 
+Translation
+-----------
+
+HumanDate supports translation of strings. The `Cocur\HumanDate\HumanDate` constructor accepts an instance of `Cocur\HumanDate\Translation\TranslationInterface`.
+
+```php
+$translation = MyTranslation(); // must implement `Cocur\HumanDate\Translation\TranslationInterface`
+$humanDate = new HumanDate($translation);
+
+echo $humanDate->transform(new DateTime('now'));
+// Calls MyTranslation::trans()
+```
+
+Additionally the library includes an adapter for the [Symfony Translation](http://symfony.com/doc/current/components/translation/index.html) component.
+
+
 Bridges
 -------
 
@@ -98,6 +114,24 @@ The bundle also provides an alias `human_date` for the `cocur_human_date` servic
 
 ```php
 $slug = $this->get('human_date')->slugify(new DateTime('2014-04-14'));
+```
+
+#### Translation
+
+HumanDate includes an adapter for the [Symfony Translation](http://symfony.com/doc/current/components/translation/index.html) component. The adapter requires an instance of `Symfony\Component\Translation\TranslatorInterface` and additionally accepts a translation domain and locale. The adapters `trans()` method passes theses values to every call of `Symfony\Component\Translation\TranslatorInterface::trans()`.
+
+```php
+use Cocur\HumanDate\Bridge\Symfony\Translation\SymfonyTranslation;
+use Cocur\HumanDate\HumanDate;
+
+// Get or create an instance of Symfony\Component\Translation\TranslatorInterface
+$sfTrans = $this->get('translation');
+
+// Create an adapter with translation domain "human_date" and locale "en"
+// trans() passes domain and locale to every call of Symfony\Component\Translation\TranslatorInterface::trans()
+$trans = new SymfonyTranslation($sfTrans, 'human_date', 'en');
+
+$humanDate = new HumanDate($trans);
 ```
 
 ### Twig

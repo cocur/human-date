@@ -11,8 +11,9 @@
 
 namespace Cocur\HumanDate;
 
-use \DateTime;
+use DateTime;
 use Cocur\HumanDate\HumanDate;
+use Mockery as m;
 
 /**
  * HumanDateTest
@@ -36,31 +37,51 @@ class HumanDateTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers Cocur\HumanDate\HumanDate::transform()
-     * @covers Cocur\HumanDate\HumanDate::isToday()
-     * @covers Cocur\HumanDate\HumanDate::isToday()
-     * @dataProvider provider
+     * @test
+     * @covers Cocur\HumanDate\HumanDate::__construct()
+     * @expectedException \InvalidArgumentException
      */
-    public function testTransform($date, $expected)
+    public function constructorGetsInvalidTranslation()
     {
-        $this->assertEquals($expected, $this->humanDate->transform(new DateTime($date)));
+        new HumanDate('string');
     }
 
     /**
+     * @test
      * @covers Cocur\HumanDate\HumanDate::transform()
      * @covers Cocur\HumanDate\HumanDate::isToday()
      * @covers Cocur\HumanDate\HumanDate::isTomorrow()
      * @covers Cocur\HumanDate\HumanDate::isYesterday()
      * @covers Cocur\HumanDate\HumanDate::isNextWeek()
      * @covers Cocur\HumanDate\HumanDate::isLastWeek()
-     * @covers Cocur\HumanDate\HumanDate::ISTHISYEAR()
+     * @covers Cocur\HumanDate\HumanDate::isThisYear()
+     * @covers Cocur\HumanDate\HumanDate::trans()
      * @dataProvider provider
      */
-    public function testTransformString($date, $expected)
+    public function transformDateTime($date, $expected)
+    {
+        $this->assertEquals($expected, $this->humanDate->transform(new DateTime($date)));
+    }
+
+    /**
+     * @test
+     * @covers Cocur\HumanDate\HumanDate::transform()
+     * @covers Cocur\HumanDate\HumanDate::isToday()
+     * @covers Cocur\HumanDate\HumanDate::isTomorrow()
+     * @covers Cocur\HumanDate\HumanDate::isYesterday()
+     * @covers Cocur\HumanDate\HumanDate::isNextWeek()
+     * @covers Cocur\HumanDate\HumanDate::isLastWeek()
+     * @covers Cocur\HumanDate\HumanDate::isThisYear()
+     * @dataProvider provider
+     */
+    public function transformString($date, $expected)
     {
         $this->assertEquals($expected, $this->humanDate->transform($date));
     }
 
+    /**
+     * @return array[]
+     */
     public function provider()
     {
         return array(
@@ -69,6 +90,55 @@ class HumanDateTest extends \PHPUnit_Framework_TestCase
             array('+1 day', 'Tomorrow'),
             array('+3 days', 'Next '.date('l', strtotime('+3 days'))),
             array('-3 days', 'Last '.date('l', strtotime('-3 days'))),
+            array('+30 days', date('F j', strtotime('+30 days'))),
+            array('-30 days', date('F j', strtotime('-30 days'))),
+            array((date('Y')+1).'-03-31', 'March 31, '.(date('Y')+1)),
+            array((date('Y')-1).'-03-31', 'March 31, '.(date('Y')-1))
+        );
+    }
+
+    /**
+     * @test
+     * @covers Cocur\HumanDate\HumanDate::transform()
+     * @covers Cocur\HumanDate\HumanDate::isToday()
+     * @covers Cocur\HumanDate\HumanDate::isTomorrow()
+     * @covers Cocur\HumanDate\HumanDate::isYesterday()
+     * @covers Cocur\HumanDate\HumanDate::isNextWeek()
+     * @covers Cocur\HumanDate\HumanDate::isLastWeek()
+     * @covers Cocur\HumanDate\HumanDate::isThisYear()
+     * @covers Cocur\HumanDate\HumanDate::trans()
+     * @dataProvider translatedProvider
+     */
+    public function transformDateTimeWithTranslation($date, $expected)
+    {
+        $trans = m::mock('Cocur\HumanDate\Translation\TranslationInterface');
+        $trans->shouldReceive('trans')->with('Today', [])->andReturn('Heute');
+        $trans->shouldReceive('trans')->with('Yesterday', [])->andReturn('Gestern');
+        $trans->shouldReceive('trans')->with('Tomorrow', [])->andReturn('Morgen');
+        $trans
+            ->shouldReceive('trans')
+            ->with('Next %weekday%', [ '%weekday%' => date('l', strtotime('+3 days')) ])
+            ->andReturn('Nächsten '.date('l', strtotime('+3 days')));
+        $trans
+            ->shouldReceive('trans')
+            ->with('Last %weekday%', [ '%weekday%' => date('l', strtotime('-3 days')) ])
+            ->andReturn('Letzten '.date('l', strtotime('-3 days')));
+
+        $humanDate = new HumanDate($trans);
+        $this->assertEquals($expected, $humanDate->transform(new DateTime($date)));
+    }
+
+    /**
+     * @return array[]
+     */
+    public function translatedProvider()
+    {
+        return array(
+            array('', 'Heute'),
+            array('-1 day', 'Gestern'),
+            array('+1 day', 'Morgen'),
+            array('+3 days', 'Nächsten '.date('l', strtotime('+3 days'))),
+            array('-3 days', 'Letzten '.date('l', strtotime('-3 days'))),
             array('+30 days', date('F j', strtotime('+30 days'))),
             array('-30 days', date('F j', strtotime('-30 days'))),
             array((date('Y')+1).'-03-31', 'March 31, '.(date('Y')+1)),
