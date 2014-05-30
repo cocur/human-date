@@ -12,6 +12,7 @@ Features
 --------
 
 - Transforms dates into a human-readable format
+- Supports translatable strings
 - No external dependencies.
 - PSR-4 compatible.
 - Compatible with PHP >= 5.4 and [HHVM](http://hhvm.com).
