@@ -34,7 +34,7 @@ class HumanDate
     public function __construct($translation = null)
     {
         if (null !== $translation && !$translation instanceof TranslationInterface) {
-            throw new InvalidArgumentException('$translation must be null or an instance ofr TranslationInterface');
+            throw new InvalidArgumentException('$translation must be null or an instance of TranslationInterface');
         }
 
         $this->translation = $translation;
