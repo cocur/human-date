@@ -13,7 +13,7 @@ namespace Cocur\HumanDate\Bridge\Twig;
 
 use \Twig_Extension;
 use \Twig_SimpleFilter;
-use \DateTime;
+use \DateTimeInterface;
 
 use Cocur\HumanDate\HumanDate;
 
@@ -48,7 +48,7 @@ class HumanDateExtension extends Twig_Extension
     }
 
     /**
-     * @param DateTime $date
+     * @param DateTimeInterface $date
      *
      * @return string
      */
