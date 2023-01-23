@@ -13,6 +13,7 @@ namespace Cocur\HumanDate;
 
 use Cocur\HumanDate\Translation\TranslationInterface;
 use DateTime;
+use DateTimeInterface;
 use InvalidArgumentException;
 
 /**
@@ -51,13 +52,13 @@ class HumanDate
     /**
      * Transforms the given date into a human-readable date.
      *
-     * @param DateTime|string $date Input date.
+     * @param DateTimeInterface|string $date Input date.
      *
      * @return string Human-readable date.
      */
     public function transform($date)
     {
-        if (!$date instanceof DateTime) {
+        if (!$date instanceof DateTimeInterface) {
             $date = new DateTime($date);
         }
 
@@ -91,11 +92,11 @@ class HumanDate
     }
 
     /**
-     * @param DateTime $date Date.
+     * @param DateTimeInterface $date Date.
      *
      * @return boolean `true` if the given date is today, `false` otherwise.
      */
-    protected function isToday(DateTime $date)
+    protected function isToday(DateTimeInterface $date)
     {
         $today = new DateTime('now');
         $start = new DateTime($today->format('Y-m-d') . ' 00:00:00');
@@ -108,11 +109,11 @@ class HumanDate
     }
 
     /**
-     * @param DateTime $date Date.
+     * @param DateTimeInterface $date Date.
      *
      * @return boolean `true` if the given date is tomorrow, `false` otherwise.
      */
-    protected function isTomorrow(DateTime $date)
+    protected function isTomorrow(DateTimeInterface $date)
     {
         $tomorrow = new DateTime('+1 day');
         $start = new DateTime($tomorrow->format('Y-m-d') . ' 00:00:00');
@@ -125,11 +126,11 @@ class HumanDate
     }
 
     /**
-     * @param DateTime $date Date.
+     * @param DateTimeInterface $date Date.
      *
      * @return boolean `true` if the given date is yesterday, `false` otherwise.
      */
-    protected function isYesterday(DateTime $date)
+    protected function isYesterday(DateTimeInterface $date)
     {
         $yesterday = new DateTime('-1 day');
         $start = new DateTime($yesterday->format('Y-m-d') . ' 00:00:00');
@@ -142,11 +143,11 @@ class HumanDate
     }
 
     /**
-     * @param DateTime $date Date.
+     * @param DateTimeInterface $date Date.
      *
      * @return boolean `true` if the given date is next week, `false` otherwise.
      */
-    protected function isNextWeek(DateTime $date)
+    protected function isNextWeek(DateTimeInterface $date)
     {
         $week = new DateTime('+7 days');
 
@@ -157,11 +158,11 @@ class HumanDate
     }
 
     /**
-     * @param DateTime $date Date.
+     * @param DateTimeInterface $date Date.
      *
      * @return boolean `true` if the given date is last week, `false` otherwise.
      */
-    protected function isLastWeek(DateTime $date)
+    protected function isLastWeek(DateTimeInterface $date)
     {
         $week = new DateTime('-7 days');
 
@@ -172,10 +173,10 @@ class HumanDate
     }
 
     /**
-     * @param DateTime $date Date.
+     * @param DateTimeInterface $date Date.
      * @return boolean `true` if the given date is this year, `false` otherwise.
      */
-    protected function isThisYear(DateTime $date)
+    protected function isThisYear(DateTimeInterface $date)
     {
         if (date('Y') === $date->format('Y')) {
             return true;
